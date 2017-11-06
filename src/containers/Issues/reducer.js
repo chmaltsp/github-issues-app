@@ -17,12 +17,16 @@ function issuesReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        [action.repoName]: [
-          ...action.issues.filter(newIssue => !newIssue.priority).map(issue => ({
-            ...issue,
-            priority: 0
-          }))
-        ]
+        [action.repoName]: action.issues.reduce((prev, next, index) => {
+          console.log(state[next.number]);
+          if (!state[next.number]) {
+            prev[next.number] = next;
+            prev[next.number].priority = 0;
+            return prev;
+          } else {
+            return prev;
+          }
+        }, {})
       };
     case GET_ISSUES_FAIL:
       return {
@@ -33,22 +37,12 @@ function issuesReducer(state = initialState, action) {
     case INCREASE_PRIORITY:
       return {
         ...state,
-        [action.repoName]: state[action.repoName].map(issue => {
-          if (issue.number === action.issue) {
-            issue.priority++;
-          }
-          return issue;
-        })
+        [state[action.repoName][action.issue]]: state[action.repoName][action.issue].priority++
       };
     case DECREASE_PRIORITY:
       return {
         ...state,
-        [action.repoName]: state[action.repoName].map(issue => {
-          if (issue.number === action.issue) {
-            issue.priority--;
-          }
-          return issue;
-        })
+        [state[action.repoName][action.issue]]: state[action.repoName][action.issue].priority--
       };
     default:
       return state;
