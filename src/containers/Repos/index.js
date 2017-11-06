@@ -2,24 +2,32 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import Issues from '../Issues';
 import FlexWrapper from '../../components/FlexWrapper';
 import Instructions from '../../components/Instructions';
 
 import Repo from './components/Repo';
+
 import { getUserRepos, selectRepo } from './actions';
-import { loadingSelector, reposSelector } from './selectors';
+import { loadingSelector, reposSelector, selectedRepoSelector } from './selectors';
 
 /**
  * Repos Container
  */
 
-const Wrapper = FlexWrapper.extend`
+const Container = FlexWrapper.extend`
   background-color: #e8e8e8;
-  max-width: 500px;
+  max-width: ${props => (props.wide ? '700px' : '500px')};
   width: 100%;
   justify-content: center;
   flex-direction: column;
 `;
+
+const Column = FlexWrapper.extend`
+  flex-direction: column;
+  width: ${props => (props.wide ? '30%' : '100%')};
+`;
+
 // eslint-disable
 export class ReposComponent extends Component {
   // eslint-enable
@@ -30,12 +38,17 @@ export class ReposComponent extends Component {
 
   handleSelectRepo = () => {};
   render() {
-    const { repos, selectRepo } = this.props;
+    const { repos, selectRepo, selectedRepo } = this.props;
     return (
-      <Wrapper>
+      <Container wide={selectedRepo !== null}>
         <Instructions>Select a Repository</Instructions>
-        {repos && repos.map((repo, index) => <Repo repo={repo} onClick={selectRepo} key={index} />)}
-      </Wrapper>
+        <FlexWrapper>
+          {repos && (
+            <Column wide={selectedRepo}>{repos.map((repo, index) => <Repo repo={repo} selected={selectedRepo} onClick={selectRepo} key={index} />)}</Column>
+          )}
+          {selectedRepo && <Issues selectedRepo={selectedRepo} />}
+        </FlexWrapper>
+      </Container>
     );
   }
 }
@@ -50,7 +63,8 @@ ReposComponent.propTypes = {
 const mapStateToProps = state => {
   return {
     repos: reposSelector()(state),
-    loading: loadingSelector()(state)
+    loading: loadingSelector()(state),
+    selectedRepo: selectedRepoSelector()(state)
   };
 };
 

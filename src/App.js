@@ -15,6 +15,8 @@ const AppContainer = FlexWrapper.extend`
   align-items: center;
 `;
 
+const LayoutContainer = FlexWrapper.extend``;
+
 const store = createStore();
 class App extends Component {
   render() {
@@ -22,7 +24,9 @@ class App extends Component {
       <Provider store={store}>
         <AppContainer>
           <AppTitle>GITHUB ISSUE APP</AppTitle>
-          <Repos />
+          <LayoutContainer>
+            <Repos />
+          </LayoutContainer>
         </AppContainer>
       </Provider>
     );

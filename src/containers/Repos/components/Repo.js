@@ -8,6 +8,7 @@ import FlexWrapper from '../../../components/FlexWrapper';
 const Wrapper = FlexWrapper.extend`
   border-top: 1px solid #777;
   flex-direction: column;
+  background-color: ${props => props.active && '#f6f6f6'};
   padding: 0 ${em(16)};
   &:last-child {
     border-bottom: 1px solid #777;
@@ -26,8 +27,8 @@ const Name = styled.h4`
 const Description = styled.p`
   font-size: ${modularScale(0.5)};
 `;
-const Repo = ({ onClick, repo }) => (
-  <Wrapper onClick={() => onClick(repo)}>
+const Repo = ({ onClick, repo, selected }) => (
+  <Wrapper active={selected === repo.name} onClick={() => onClick(repo)}>
     <Name description={repo.description}>{repo.name}</Name>
     {repo.description && <Description>{repo.description}</Description>}
   </Wrapper>

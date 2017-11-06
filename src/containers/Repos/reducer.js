@@ -6,7 +6,8 @@
 import { GET_REPOS, SET_REPOS, GET_REPOS_FAIL, SELECT_REPO } from './constants';
 
 const initialState = {
-  loading: false
+  loading: false,
+  selectedRepo: null
 };
 
 function reposReducer(state = initialState, action) {

@@ -1,17 +1,60 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { em } from 'polished';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { selectIssues, selectLoading } from './selectors';
+import { increasePriorirty, decreasePrioirity } from './actions';
+import Issue from './components/Issue';
+import FlexWrapper from '../../components/FlexWrapper';
 
 /**
  * IssuesComponent
  */
+
+const Wrapper = FlexWrapper.extend`
+  background-color: #e8e8e8;
+  width: 70%;
+  min-width: 300px;
+  flex-direction: column;
+`;
+
+const Message = styled.h4`
+  padding: 0 ${em(16)};
+`;
+
 export class IssuesComponent extends Component {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    return <div>MY COMPONENT</div>;
+    const { issues, loading, increasePriorirty, decreasePrioirity } = this.props;
+    return (
+      <Wrapper>
+        {loading && <Message>Loading...</Message>}
+        {!loading && issues && issues.length === 0 && <Message>There are no open issues</Message>}
+        {issues && issues.map((issue, index) => <Issue issue={issue} key={index} increase={increasePriorirty} decrease={decreasePrioirity} />)}
+      </Wrapper>
+    );
   }
 }
 
 IssuesComponent.propTypes = {
-  prop: PropTypes.type.isRequired
+  issues: PropTypes.array,
+  loading: PropTypes.bool
 };
 
-export default IssuesComponent;
+function mapStateToProps(state) {
+  return {
+    issues: selectIssues(state),
+    loading: selectLoading(state)
+  };
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  console.log(ownProps);
+  return {
+    increasePriorirty: issue => dispatch(increasePriorirty(ownProps.selectedRepo, issue)),
+    decreasePrioirity: issue => dispatch(decreasePrioirity(ownProps.selectedRepo, issue))
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(IssuesComponent);
