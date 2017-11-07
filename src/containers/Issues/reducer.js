@@ -18,12 +18,13 @@ function issuesReducer(state = initialState, action) {
         ...state,
         loading: false,
         [action.repoName]: action.issues.reduce((prev, next, index) => {
-          console.log(state[next.number]);
-          if (!state[next.number]) {
+          console.log(prev, next);
+          if (!state[action.repoName] || (state[action.repoName] && !state[action.repoName][next.number])) {
             prev[next.number] = next;
             prev[next.number].priority = 0;
             return prev;
           } else {
+            prev[next.number] = state[action.repoName][next.number];
             return prev;
           }
         }, {})
@@ -37,12 +38,24 @@ function issuesReducer(state = initialState, action) {
     case INCREASE_PRIORITY:
       return {
         ...state,
-        [state[action.repoName][action.issue]]: state[action.repoName][action.issue].priority++
+        [action.repoName]: {
+          ...state[action.repoName],
+          [action.issue]: {
+            ...state[action.repoName][action.issue],
+            priority: state[action.repoName][action.issue].priority + 1
+          }
+        }
       };
     case DECREASE_PRIORITY:
       return {
         ...state,
-        [state[action.repoName][action.issue]]: state[action.repoName][action.issue].priority--
+        [action.repoName]: {
+          ...state[action.repoName],
+          [action.issue]: {
+            ...state[action.repoName][action.issue],
+            priority: state[action.repoName][action.issue].priority - 1
+          }
+        }
       };
     default:
       return state;
