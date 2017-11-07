@@ -32,7 +32,7 @@ export class IssuesComponent extends Component {
       <Wrapper>
         {loading && <Message>Loading...</Message>}
         {!loading && issues && issues.length === 0 && <Message>There are no open issues</Message>}
-        {issues && issues.map((issue, index) => <Issue issue={issue} key={index} increase={increasePriorirty} decrease={decreasePrioirity} />)}
+        {issues && issues.map((issue, index) => <Issue issue={issue} key={index} index={index} increase={increasePriorirty} decrease={decreasePrioirity} />)}
       </Wrapper>
     );
   }
@@ -53,8 +53,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch, ownProps) {
   console.log(ownProps);
   return {
-    increasePriorirty: issue => dispatch(increasePriorirty(ownProps.selectedRepo, issue)),
-    decreasePrioirity: issue => dispatch(decreasePrioirity(ownProps.selectedRepo, issue))
+    increasePriorirty: (issue, index) => dispatch(increasePriorirty(ownProps.selectedRepo, issue, index)),
+    decreasePrioirity: (issue, index) => dispatch(decreasePrioirity(ownProps.selectedRepo, issue, index))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(IssuesComponent);

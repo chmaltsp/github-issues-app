@@ -38,17 +38,19 @@ export function getIssuesFail(error) {
   };
 }
 
-export function increasePriorirty(repoName, issue) {
+export function increasePriorirty(repoName, issue, index) {
   return {
     type: INCREASE_PRIORITY,
     repoName,
-    issue
+    issue,
+    index
   };
 }
-export function decreasePrioirity(repoName, issue) {
+export function decreasePrioirity(repoName, issue, index) {
   return {
     type: DECREASE_PRIORITY,
     repoName,
-    issue
+    issue,
+    index
   };
 }

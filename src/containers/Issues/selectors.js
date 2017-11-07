@@ -5,7 +5,12 @@ export const selectIssues = state =>
   Object.keys(state.issues[state.repos.selectedRepo]).map(issue => {
     return state.issues[state.repos.selectedRepo][issue];
   }).sort((first, second) => {
-    console.log(first, second);
-    return 1;
+    if (first.priority >= second.priority) {
+      return 1;
+    } else if (first.priority <= second.priority) {
+      return -1;
+    } else {
+      return 0;
+    }
   });
 export const selectLoading = state => state.issues.loading;

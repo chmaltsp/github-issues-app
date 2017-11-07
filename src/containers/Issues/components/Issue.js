@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { modularScale, em } from 'polished';
+import { modularScale, em, ellipsis } from 'polished';
 
 import FlexWrapper from '../../../components/FlexWrapper';
 
@@ -23,6 +23,7 @@ const Title = styled.h4`
   margin: ${em(8)} 0;
 `;
 const Description = styled.p`
+  ${ellipsis('5000px')};
   margin: 0;
   font-size: ${modularScale(0.5)};
 `;
@@ -53,7 +54,7 @@ const PriorityButton = FlexWrapper.extend`
     background-color: #e7e7e7;
   }
 `;
-const Issue = ({ onClick, issue, selected, increase, decrease }) => (
+const Issue = ({ onClick, issue, selected, increase, decrease, index }) => (
   <Wrapper>
     <InfoColumn>
       <Title description={issue.body}>{issue.title}</Title>
@@ -61,8 +62,8 @@ const Issue = ({ onClick, issue, selected, increase, decrease }) => (
       <Priority>Priority: {issue.priority}</Priority>
     </InfoColumn>
     <PrioirtyControls>
-      <PriorityButton onClick={() => increase(issue.number)}>+</PriorityButton>
-      <PriorityButton onClick={() => decrease(issue.number)}>-</PriorityButton>
+      <PriorityButton onClick={() => increase(issue.number, index)}>+</PriorityButton>
+      <PriorityButton onClick={() => decrease(issue.number, index)}>-</PriorityButton>
     </PrioirtyControls>
   </Wrapper>
 );
