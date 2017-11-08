@@ -4,7 +4,7 @@
 
 1. Unzip Folder and run `yarn` from project root.
 2. Change `token` in `src/config.json` to your github token.
-3. Run `yarn start`
+3. Run `yarn start` and open browser to `localhost:3000`
 
 ### Comments
 
