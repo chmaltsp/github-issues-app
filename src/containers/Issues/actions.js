@@ -9,7 +9,6 @@ export function getRepoIssues(user, repo) {
         dispatch(getIssues());
         try {
             const response = await api.get(`/repos/${user}/${repo}/issues`);
-            console.log(response);
             dispatch(setIssues(repo, response.data));
         } catch (error) {
             console.error(error);
